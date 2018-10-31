@@ -403,10 +403,38 @@ namespace coen79_lab6
     
     
     
-    node* list_detect_loop (node* head_ptr){
+    node* list_detect_loop (node* head_ptr)
+    {
+        node * fast_runner = head_ptr;
+        node * slow_runner = head_ptr;
+        while (fast_runner != NULL && fast_runner->link() != NULL && slow_runner == fast_runner)
+            {
+                slow_runner = slow_runner->link();
+                fast_runner = fast_runner->link()->link();
+            }
+        if (fast_runner == NULL || fast_runner->link() == NULL)
+            return NULL;
         
-        
+        while (slow_runner != fast_runner)
+            {
+                fast_runner = fast_runner->link();
+                slow_runner = slow_runner->link();
+            }
+        return fast_runner;
     }
+    /* Pseudo code for detecting loops.
+    Floyd’s cycle-finding algorithm
+     1. Declare two pointers slow_runner and fast_runner, where both
+     point to the head of the linked list
+     2. while (fast_runner != NULL && fast_runner -
+     > link() != NULL)
+     • slow_runner moves one step at a time, and fast_runner moves two steps at a time
+     • Break the loop if slow_runner == fast_runner
+     3. Return NULL if the two pointers did not meet (i.e.,
+     fast_runner == NULL || fast_runner - > link() == NULL)
+     4. while (slow_runner != fast_runner)
+     • Both pointers move one step at a time.
+     */
 
     
     
