@@ -391,9 +391,27 @@ namespace coen79_lab6
         if(head_ptr != NULL){
             //precondition needs to be met: the head pointer must not be null. Otherwise, it means it does not point to a linked list
             
-            
-            
-            
+            node* temp = head_ptr; //create temporary node
+            node* tracker;//create node that will traverse the list
+            node* removed;//pointer to keep track of node to remove
+            while (temp->link() != NULL && temp != NULL){
+                
+                tracker = temp; //set the tracker pointer to point to temp
+                
+                while(tracker->link() != NULL){//check if the tracker pointer has reached the end of the list
+                    if(temp->data() == tracker->link()->data()){ //check if data of temp node is the same as the next node to check if they are duplicates
+                        removed = tracker->link();//set removed pointer to the next node
+                        tracker->set_link(removed->link()); //set the link of tracker to the node after the duplicate
+                        delete removed; //remove the duplicate
+                    }
+                    else if(temp->data() != tracker->link()->data()){
+                        tracker = tracker->link(); //if they are not duplicates, move the tracker over.
+                    }
+                    
+                }
+                temp = temp->link(); //move temp once the tracker has reached the end of the list
+                
+            }
             
             
         }
@@ -401,29 +419,35 @@ namespace coen79_lab6
         
     }
     
+    //   node* list_detect_loop (node* head_ptr);
+    //     Precondition: head_ptr is the head pointer of a linked list
+    //     Postcondition: If there is a loop in the linked list, the returned value
+    //     is a pointer to the start of the loop. The returned value is NULL if
+    //     there is no loop in the list
     
     
-    node* list_detect_loop (node* head_ptr)
-    {
+    
+    node* list_detect_loop (node* head_ptr){
+        
         node * fast_runner = head_ptr;
         node * slow_runner = head_ptr;
         while (fast_runner != NULL && fast_runner->link() != NULL && slow_runner == fast_runner)
-            {
-                slow_runner = slow_runner->link();
-                fast_runner = fast_runner->link()->link();
-            }
+        {
+            slow_runner = slow_runner->link();
+            fast_runner = fast_runner->link()->link();
+        }
         if (fast_runner == NULL || fast_runner->link() == NULL)
             return NULL;
         
         while (slow_runner != fast_runner)
-            {
-                fast_runner = fast_runner->link();
-                slow_runner = slow_runner->link();
-            }
+        {
+            fast_runner = fast_runner->link();
+            slow_runner = slow_runner->link();
+        }
         return fast_runner;
     }
     /* Pseudo code for detecting loops.
-    Floyd’s cycle-finding algorithm
+     Floyd’s cycle-finding algorithm
      1. Declare two pointers slow_runner and fast_runner, where both
      point to the head of the linked list
      2. while (fast_runner != NULL && fast_runner -
@@ -435,6 +459,9 @@ namespace coen79_lab6
      4. while (slow_runner != fast_runner)
      • Both pointers move one step at a time.
      */
+        
+        
+    }
 
     
     
